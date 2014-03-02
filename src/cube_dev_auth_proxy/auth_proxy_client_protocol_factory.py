@@ -13,16 +13,20 @@ class AuthProxyClientProtocolFactory(Factory):
 
     protocol = AuthProxyClientProtocol
 
-    def __init__(self, server, auth_data):
+    def __init__(self, server, auth_data, gban_list):
         self.server = server
         self.local_master_server_list = ServerListModel()
         self.authentication_controller = AuthenticationController(auth_data)
+        self.gban_list = gban_list
 
     def get_registered_server_list(self):
         return self.server.remote_master_server_list + self.local_master_server_list.to_response_string()
 
     def add_registered_server(self, client_protocol, host, port):
         self.local_master_server_list.add(client_protocol, host, port)
+
+    def get_gban_list(self):
+        return self.gban_list.to_response_string()
 
     def remove_registered_server(self, client_protocol):
         self.local_master_server_list.remove(client_protocol)

@@ -12,9 +12,10 @@ logger = logging.getLogger(__name__)
 class Server(object):
     """A protocol level proxy server which sits between the official master server and proxies the
     master server list but handles auth and server registration locally."""
-    def __init__(self, auth_pubkeys):
+    def __init__(self, auth_pubkeys, gban_list):
         self.remote_master_server_list = ""
         self.auth_pubkeys = auth_pubkeys
+        self.gban_list = gban_list
 
     @defer.inlineCallbacks
     def run(self, master_server_domain, master_server_port):
@@ -29,7 +30,7 @@ class Server(object):
         self._setup_proxy()
 
     def _setup_proxy(self):
-        self.proxy_client_protocol_factory = AuthProxyClientProtocolFactory(self, self.auth_pubkeys)
+        self.proxy_client_protocol_factory = AuthProxyClientProtocolFactory(self, self.auth_pubkeys, self.gban_list)
         self.listen = reactor.listenTCP(port=28787, factory=self.proxy_client_protocol_factory, backlog=5, interface='127.0.0.1')
 
     @defer.inlineCallbacks

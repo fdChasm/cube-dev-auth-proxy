@@ -69,6 +69,8 @@ def regserv_handler(client_protocol, args):
         client_protocol.factory.add_registered_server(client_protocol, host, port)
         client_protocol.sendLine('succreg')
 
+        client_protocol.sendLine(client_protocol.factory.get_gban_list())
+
         monitor_server(client_protocol, host, port + 1)
     except:
         sys.stderr.write("Failure in registering server.\n")
