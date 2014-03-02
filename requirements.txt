@@ -1,0 +1,4 @@
+twisted
+pycube2crypto
+-e git+git://github.com/fdChasm/pycube2common#egg=pycube2common-0.1.0
+-e git+git://github.com/fdChasm/pycube2protocol#egg=pycube2protocol-0.1.0
